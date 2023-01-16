@@ -1,8 +1,10 @@
 package fr.isen.millet.androiderestaurant
 
+import CustomAdapter
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.isen.millet.androiderestaurant.databinding.ActivityCategorieBinding
 
@@ -16,7 +18,19 @@ class CategorieActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //val title = findViewById<TextView>(R.id.TitleCategorie)
-        binding.TitleCategorie.text = intent.extras?.getString("TitleCategorie") ?: "No Categorie title found"}
+        binding.TitleCategorie.text = intent.extras?.getString("TitleCategorie") ?: "No Categorie title found"
+        actionBar?.title = binding.TitleCategorie.text
+
+        val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
+        recyclerview.layoutManager = LinearLayoutManager(this)
+        val data = ArrayList<ItemsViewModel>()
+        for (i in 1..20) {
+            data.add(ItemsViewModel(R.drawable.ic_launcher_foreground, "Item " + i))
+        }
+        val adapter = CustomAdapter(data)
+        recyclerview.adapter = adapter
+
+    }
 
 
 

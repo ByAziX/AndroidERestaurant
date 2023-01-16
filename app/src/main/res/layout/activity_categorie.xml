@@ -11,16 +11,30 @@
         android:id="@+id/TitleCategorie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="332dp"
+        android:layout_marginBottom="135dp"
         android:text="Categorie"
-        tools:layout_editor_absoluteX="18dp"
-        tools:layout_editor_absoluteY="28dp" />
+        app:layout_constraintBottom_toTopOf="@+id/recyclerview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
-        android:layout_width="388dp"
-        android:layout_height="195dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="182dp" />
+        android:layout_width="340dp"
+        android:layout_height="549dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="135dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TitleCategorie"
+        tools:itemCount="8"
+        tools:listitem="@layout/card_view_design" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
