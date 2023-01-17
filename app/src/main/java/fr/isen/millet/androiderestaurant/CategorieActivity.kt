@@ -55,9 +55,9 @@ class CategorieActivity : AppCompatActivity() {
         }
 
         recyclerView.adapter = CustomAdapter(dishes) {
-            val intent = Intent(this, DetailsActivity::class.java)
-            //Toast.makeText(this@CategorieActivity, , Toast.LENGTH_SHORT).show()
-            //intent.putExtra("titleDetails", )
+            val intent = Intent(this, DetailsDishes::class.java)
+            Toast.makeText(this@CategorieActivity, it, Toast.LENGTH_SHORT).show()
+            intent.putExtra("titleDetails", it)
             startActivity(intent)
         }
 

@@ -40,10 +40,6 @@ fun ChangePage(Button: Button) {
     Toast.makeText(this@HomeActivity,Button.text,Toast.LENGTH_SHORT).show()
     intent.putExtra("TitleCategorie",Button.text)
     startActivity(intent)
-
-    //Toast.makeText(this,Button.text,Toast.LENGTH_SHORT).show()
-    //Snackbar.make(it.rootView,"Hello2",Snackbar.LENGTH_SHORT).show()
-    //setContentView(R.layout.activity_categorie)
 }
 
 

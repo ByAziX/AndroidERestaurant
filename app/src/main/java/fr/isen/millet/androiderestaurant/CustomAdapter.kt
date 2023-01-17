@@ -4,8 +4,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.isen.millet.androiderestaurant.R
+import org.w3c.dom.Text
 
-class CustomAdapter(private val list: ArrayList<String>,private val OnItemClickListener: () -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private val list: ArrayList<String>,private val OnItemClickListener: (String) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     // adapter conteneur
     // RecyclerView contenu
 
@@ -28,7 +29,7 @@ class CustomAdapter(private val list: ArrayList<String>,private val OnItemClickL
         val itemsViewModel = list[position]
         holder.textView.text = itemsViewModel
         holder.itemView.setOnClickListener{
-            OnItemClickListener()
+            OnItemClickListener(holder.textView.text as String)
         }
 
     }
