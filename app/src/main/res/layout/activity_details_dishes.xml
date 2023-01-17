@@ -5,7 +5,7 @@
     android:id="@+id/titleDetails"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsDishes">
+    tools:context=".DetailsDishesActivity">
 
     <TextView
         android:id="@+id/titleDetailsDishes"

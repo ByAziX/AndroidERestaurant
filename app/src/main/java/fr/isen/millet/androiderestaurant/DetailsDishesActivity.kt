@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import fr.isen.millet.androiderestaurant.databinding.ActivityDetailsDishesBinding
 
-class DetailsDishes : AppCompatActivity() {
+class DetailsDishesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsDishesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
