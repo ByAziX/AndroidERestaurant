@@ -8,11 +8,11 @@
         <item>Nuttela</item>
     </string-array>
     <string-array name="plats">
-        <item id="1">Veau</item>
-        <item id="2">pizza</item>
-        <item id="3">Tomate</item>
-        <item id="4">pasta</item>
-        <item id="5">hamburger</item>
+        <item>Veau</item>
+        <item>pizza</item>
+        <item>Tomate</item>
+        <item>pasta</item>
+        <item>hamburger</item>
     </string-array>
     <string-array name="desserts">
         <item>yaourt</item>

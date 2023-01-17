@@ -1,12 +1,11 @@
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.isen.millet.androiderestaurant.R
 
-class CustomAdapter(private val list: Array<String>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private val list: ArrayList<String>,private val OnItemClickListener: () -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     // adapter conteneur
     // RecyclerView contenu
 
@@ -27,14 +26,17 @@ class CustomAdapter(private val list: Array<String>) : RecyclerView.Adapter<Cust
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val itemsViewModel = list[position]
-        // sets the image to the imageview from our itemHolder class
-       // holder.imageView.setImageResource(itemsViewModel.image)
-        // sets the text to the textview from our itemHolder class
-        //holder.textView.text = itemsViewModel.text
         holder.textView.text = itemsViewModel
+        holder.itemView.setOnClickListener{
+            OnItemClickListener()
+        }
 
     }
 
     // return the number of the items in the list
     override fun getItemCount(): Int = list.size
+
+
+
 }
+
