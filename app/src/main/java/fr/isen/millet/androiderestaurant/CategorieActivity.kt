@@ -50,22 +50,6 @@ class CategorieActivity : AppCompatActivity() {
                 // parse json to get dishes list and display it in a recycler view with a custom adapter (see below)
                 Log.i("API oui",it.getJSONArray("data").toString())
 
-                val list = it.getJSONArray("data")
-                // get Entry from JSON
-                val listDishes = mutableListOf<Dish>()
-
-                for (i in 0 until list.length()) {
-                    val dish = list.getJSONObject(i)
-                    val dishName = dish.getString("name")
-                    val dishPrice = dish.getString("price")
-                    val dishId = dish.getString("id")
-                    val dishPicture = dish.getString("picture")
-                    val dishDescription = dish.getString("description")
-                    val dishCategory = dish.getString("category")
-                    val dishEntry = Dish(dishName, dishPrice, dishId, dishPicture, dishDescription, dishCategory)
-                    listDishes.add(dishEntry)
-                    Log.i("API listDishes",dishEntry.toString())
-                }
 
             },
             Response.ErrorListener {
