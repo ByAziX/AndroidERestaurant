@@ -12,6 +12,9 @@
         android:theme="@style/Theme.AndroidERestaurant"
         tools:targetApi="31">
         <activity
+            android:name=".InformationDishesActivity"
+            android:exported="false" />
+        <activity
             android:name=".CategorieActivity"
             android:exported="false" />
         <activity

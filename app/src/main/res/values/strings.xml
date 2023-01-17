@@ -1,3 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">AndroidERestaurant</string>
+    <string name="app_name">AndroidERestaurant !</string>
+    <string-array name="starter">
+        <item>Cereal</item>
+        <item>Tartine</item>
+        <item>Confiture</item>
+        <item>Nuttela</item>
+    </string-array>
+    <string-array name="plats">
+        <item id="1">Veau</item>
+        <item id="2">pizza</item>
+        <item id="3">Tomate</item>
+        <item id="4">pasta</item>
+        <item id="5">hamburger</item>
+    </string-array>
+    <string-array name="desserts">
+        <item>yaourt</item>
+        <item>fruit</item>
+        <item>mousse au chocolat</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

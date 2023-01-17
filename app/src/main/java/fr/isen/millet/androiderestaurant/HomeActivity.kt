@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import fr.isen.millet.androiderestaurant.databinding.ActivityCategorieBinding
 import fr.isen.millet.androiderestaurant.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
