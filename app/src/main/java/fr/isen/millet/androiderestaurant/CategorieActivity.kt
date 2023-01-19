@@ -1,32 +1,31 @@
 package fr.isen.millet.androiderestaurant
 
 import CustomAdapter
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.AuthFailureError
 import com.android.volley.Request
-import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import fr.isen.millet.androiderestaurant.databinding.ActivityCategorieBinding
-import fr.isen.millet.androiderestaurant.datamodel.Dish
+import fr.isen.millet.androiderestaurant.datamodel.Data
 import org.json.JSONObject
 
 
 enum class Categorie(val value: String) {
-    STARTER("Starter"),
-    MAIN("Plats"),
+    ENTREES("Entrées"),
+    PLATS("Plats"),
     DESSERT("Desserts")
 }
 
 class CategorieActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategorieBinding
     var url = "http://test.api.catering.bluecodegames.com/menu"
+    @SuppressLint("AppCompatMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategorieBinding.inflate(layoutInflater)
@@ -46,13 +45,30 @@ class CategorieActivity : AppCompatActivity() {
         val request = JsonObjectRequest(
             Request.Method.POST, url, json,
             {
-                Log.i("API SUCCESS", it.toString())
-                // parse json to get dishes list and display it in a recycler view with a custom adapter (see below)
-                Log.i("API oui",it.getJSONArray("data").toString())
+
+
+                val gson = Gson()
+                val list: Data = gson.fromJson(it.toString(), Data::class.java)
+                val filterList = list.data.filter { it.name_fr == binding.TitleCategorie.text }
+            //get items from the list
+                val items = filterList[0].items
+
+                Log.d("filterList", list.toString())
+
+                val recyclerView = binding.recyclerview
+                recyclerView.layoutManager = LinearLayoutManager(this)
+                recyclerView.adapter = CustomAdapter(filterList[0].items) {
+
+                    val intent = Intent(this, DetailsDishesActivity::class.java)
+                    intent.putExtra("titleDetails", it)
+                    startActivity(intent)
+                }
+
+
 
 
             },
-            Response.ErrorListener {
+             {
 
                 Log.e("API Error", it.toString())
             })
@@ -61,14 +77,14 @@ class CategorieActivity : AppCompatActivity() {
         Volley.newRequestQueue(this).add(request)
 
 
-        val recyclerView = binding.recyclerview
+       /* val recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val dishes = when (binding.TitleCategorie.text) {
-            Categorie.STARTER.value -> resources.getStringArray(R.array.starter)
+            Categorie.ENTREES.value -> resources.getStringArray(R.array.starter)
                 .toList() as ArrayList<String>
 
-            Categorie.MAIN.value -> resources.getStringArray(R.array.plats)
+            Categorie.PLATS.value -> resources.getStringArray(R.array.plats)
                 .toList() as ArrayList<String>
 
             Categorie.DESSERT.value -> resources.getStringArray(R.array.desserts)
@@ -84,10 +100,15 @@ class CategorieActivity : AppCompatActivity() {
             intent.putExtra("titleDetails", it)
             startActivity(intent)
         }
+*/
 
 
 
 
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d ("onDestroy", "$this onDestroy")
     }
 }
 

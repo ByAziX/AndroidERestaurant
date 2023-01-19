@@ -4,9 +4,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.isen.millet.androiderestaurant.R
-import org.w3c.dom.Text
+import fr.isen.millet.androiderestaurant.datamodel.Plat
 
-class CustomAdapter(private val list: ArrayList<String>,private val OnItemClickListener: (String) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private val list: ArrayList<Plat>, private val OnItemClickListener: (String) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     // adapter conteneur
     // RecyclerView contenu
 
@@ -14,6 +14,7 @@ class CustomAdapter(private val list: ArrayList<String>,private val OnItemClickL
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         // val imageView: ImageView = itemView.findViewById(R.id.imageview)
         val textView: TextView = itemView.findViewById(R.id.textView)
+        var imageView = itemView.findViewById<View>(R.id.imageview)
     }
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +28,11 @@ class CustomAdapter(private val list: ArrayList<String>,private val OnItemClickL
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val itemsViewModel = list[position]
-        holder.textView.text = itemsViewModel
+        holder.textView.text = itemsViewModel.name_fr
+        // insert image from url
+         //Picasso.get().load(itemsViewModel.image).into(holder.imageView)
+
+
         holder.itemView.setOnClickListener{
             OnItemClickListener(holder.textView.text as String)
         }

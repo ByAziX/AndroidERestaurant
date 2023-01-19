@@ -14,6 +14,7 @@ class DetailsDishesActivity : AppCompatActivity() {
 
 
         binding.titleDetailsDishes.text = intent.extras?.getString("titleDetails") ?: "No Categorie title found"
+
     }
 
 }

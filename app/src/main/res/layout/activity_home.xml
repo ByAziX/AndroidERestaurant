@@ -19,10 +19,10 @@
         app:layout_constraintVertical_bias="0.168" />
 
     <Button
-        android:id="@+id/StarterButton"
+        android:id="@+id/EntreesButton"
         android:layout_width="119dp"
         android:layout_height="48dp"
-        android:text="Starter"
+        android:text="Entrées"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,14 +41,14 @@
         app:layout_constraintVertical_bias="0.465" />
 
     <Button
-        android:id="@+id/platButton"
+        android:id="@+id/plastButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Plats"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/StarterButton"
+        app:layout_constraintTop_toBottomOf="@+id/EntreesButton"
         app:layout_constraintVertical_bias="0.048" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

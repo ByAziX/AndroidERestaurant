@@ -19,11 +19,11 @@ class HomeActivity : AppCompatActivity() {
         //val buttonStarter = findViewById<Button>(R.id.StarterButton)
         //val buttonPlats = findViewById<Button>(R.id.platButton)
         //val buttonDesserts = findViewById<Button>(R.id.DessertButton)
-        binding.StarterButton.setOnClickListener{
-            ChangePage(binding.StarterButton)
+        binding.EntreesButton .setOnClickListener{
+            ChangePage(binding.EntreesButton)
         }
-        binding.platButton.setOnClickListener{
-            ChangePage(binding.platButton)
+        binding.plastButton .setOnClickListener{
+            ChangePage(binding.plastButton)
         }
         binding.DessertButton.setOnClickListener{
             ChangePage(binding.DessertButton)
