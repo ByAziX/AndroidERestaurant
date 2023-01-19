@@ -51,16 +51,18 @@ class CategorieActivity : AppCompatActivity() {
                 val list: Data = gson.fromJson(it.toString(), Data::class.java)
                 val filterList = list.data.filter { it.name_fr == binding.TitleCategorie.text }
             //get items from the list
-                val items = filterList[0].items
 
                 Log.d("filterList", list.toString())
 
                 val recyclerView = binding.recyclerview
                 recyclerView.layoutManager = LinearLayoutManager(this)
-                recyclerView.adapter = CustomAdapter(filterList[0].items) {
+                recyclerView.adapter = CustomAdapter(filterList[0].items) { title: String, price: String, image: String ->
+
 
                     val intent = Intent(this, DetailsDishesActivity::class.java)
-                    intent.putExtra("titleDetails", it)
+                    intent.putExtra("titleDetails", title)
+                    intent.putExtra("priceDetails", price)
+                    intent.putExtra("imageDetails",image)
                     startActivity(intent)
                 }
 

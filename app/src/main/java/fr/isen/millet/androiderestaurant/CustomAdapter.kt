@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso
 import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.datamodel.Plat
 
-class CustomAdapter(private val list: ArrayList<Plat>, private val OnItemClickListener: (String) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private val list: ArrayList<Plat>, private val OnItemClickListener: (String,String,String) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     // adapter conteneur
     // RecyclerView contenu
     // Holds the views for adding it to text
@@ -37,6 +37,7 @@ class CustomAdapter(private val list: ArrayList<Plat>, private val OnItemClickLi
         holder.PricesView.text = itemsViewModel.prices[0].price.toString() + "€"
 
 
+
         if (itemsViewModel.images[0] != "") {
 
             Picasso.get().load(itemsViewModel.images[0]).into(holder.imageView)
@@ -48,7 +49,7 @@ class CustomAdapter(private val list: ArrayList<Plat>, private val OnItemClickLi
 
 
         holder.itemView.setOnClickListener{
-            OnItemClickListener(holder.textView.text as String)
+            OnItemClickListener(holder.textView.text as String, holder.PricesView.text as String, itemsViewModel.images[0])
         }
 
     }
