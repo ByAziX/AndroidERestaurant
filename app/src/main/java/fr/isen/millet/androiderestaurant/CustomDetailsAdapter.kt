@@ -35,4 +35,6 @@ class CustomDetailsAdapter(private val images: ArrayList<String>) : RecyclerView
 
     }
 
+
+
 }

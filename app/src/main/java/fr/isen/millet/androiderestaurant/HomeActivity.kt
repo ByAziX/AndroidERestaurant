@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import fr.isen.millet.androiderestaurant.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
@@ -41,6 +42,7 @@ class HomeActivity : AppCompatActivity() {
 fun ChangePage(Button: Button) {
     val intent = Intent(this, CategorieActivity::class.java)
     Toast.makeText(this@HomeActivity,Button.text,Toast.LENGTH_SHORT).show()
+    Snackbar.make(binding.root,Button.text,Snackbar.LENGTH_SHORT).show()
     intent.putExtra("TitleCategorie",Button.text)
     startActivity(intent)
 }
