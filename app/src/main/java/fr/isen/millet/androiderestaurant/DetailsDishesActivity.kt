@@ -16,7 +16,7 @@ class DetailsDishesActivity : AppCompatActivity() {
 
         binding.titleDetailsDishes.text = intent.extras?.getString("titleDetails") ?: "No Categorie title found"
         binding.priceDetailsDishes.text = intent.extras?.getString("priceDetails") ?: "No Categorie title found"
-        if (intent.extras?.getString("imageDetails") != null) {
+        if (intent.extras?.getString("imageDetails") != null && intent.extras?.getString("imageDetails") != "") {
             Picasso.get().load(intent.extras?.getString("imageDetails")).into(binding.imageViewDetails)
         }
     }

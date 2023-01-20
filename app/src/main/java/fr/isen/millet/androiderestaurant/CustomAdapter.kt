@@ -37,9 +37,7 @@ class CustomAdapter(private val list: ArrayList<Plat>, private val OnItemClickLi
         holder.PricesView.text = itemsViewModel.prices[0].price.toString() + "€"
 
 
-
         if (itemsViewModel.images[0] != "") {
-
             Picasso.get().load(itemsViewModel.images[0]).into(holder.imageView)
             Log.d("image", itemsViewModel.images[0])
 
