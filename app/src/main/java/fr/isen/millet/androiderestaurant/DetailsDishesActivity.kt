@@ -6,11 +6,13 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import fr.isen.millet.androiderestaurant.CustomDetailsAdapter
 import fr.isen.millet.androiderestaurant.databinding.ActivityDetailsDishesBinding
 import fr.isen.millet.androiderestaurant.datamodel.CartContainer
 import fr.isen.millet.androiderestaurant.datamodel.CartItems
 import fr.isen.millet.androiderestaurant.datamodel.Items
+import java.io.File
 
 
 class DetailsDishesActivity : AppCompatActivity() {
@@ -29,6 +31,7 @@ class DetailsDishesActivity : AppCompatActivity() {
         title=items.name_fr
         binding.priceDetailsDishes.text = items.prices[0].price.toString() + "€"
         binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price).toString() + "€"
+        cartContainer= CartContainer(mutableListOf())
 
         var ingredients = ""
         for (i in items.ingredients) {
@@ -95,7 +98,7 @@ class DetailsDishesActivity : AppCompatActivity() {
 
          Snackbar.make(binding.root, "Dish added to cart", Snackbar.LENGTH_SHORT).show()
 
-           /* if (cartContainer.cartItemsList.contains(CartItems(items, quantity))) {
+              if (cartContainer.cartItemsList.contains(CartItems(items, quantity))) {
 
                 val index = cartContainer.cartItemsList.indexOf(CartItems(items, quantity))
 
@@ -107,12 +110,12 @@ class DetailsDishesActivity : AppCompatActivity() {
             } else {
                 cartContainer.cartItemsList.add(CartItems(items, quantity))
 
-            }*/
-            //cartContainer.cartItemsList.add(CartItems(items, quantity))
+            }
 
-         /*val json = Gson().toJson(cartContainer)
-         getSharedPreferences("cart", MODE_PRIVATE).edit().putString("cart", json).apply()
-         Log.i("cart", json)*/
+            val json = GsonBuilder().setPrettyPrinting().create().toJson(cartContainer)
+            val file = File(filesDir, "cart.json")
+            file.writeText(json)
+
 
         }
 
