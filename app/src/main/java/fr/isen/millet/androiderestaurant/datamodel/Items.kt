@@ -10,6 +10,6 @@ data class Items(
     val images : List<String>,
     val ingredients: ArrayList<Ingredients>,
     val prices: ArrayList<Prices>
-){
+): java.io.Serializable{
 
 }

@@ -10,7 +10,7 @@ import com.squareup.picasso.Picasso
 import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.datamodel.Items
 
-class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickListener: (String, String, String) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickListener: (Items) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     // adapter conteneur
     // RecyclerView contenu
     // Holds the views for adding it to text
@@ -47,11 +47,12 @@ class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickL
 
 
         holder.itemView.setOnClickListener{
-            OnItemClickListener(holder.textView.text as String, holder.PricesView.text as String, itemsViewModel.images[0])
+            OnItemClickListener(itemsViewModel)
         }
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun refreshList(newList: ArrayList<Items>) {
         list.clear()
         list.addAll(newList)

@@ -47,14 +47,17 @@ class CategorieActivity : AppCompatActivity() {
         val recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        recyclerView.adapter = CustomAdapter(arrayListOf()) { title: String, price: String, image: String ->
+        recyclerView.adapter = CustomAdapter(arrayListOf()) { //title: String, price: String, image: String ->
 
 
 
             val intent = Intent(this, DetailsDishesActivity::class.java)
-            intent.putExtra("titleDetails", title)
+
+            intent.putExtra("Items", it)
+
+          /*  intent.putExtra("titleDetails", title)
             intent.putExtra("priceDetails", price)
-            intent.putExtra("imageDetails",image)
+            intent.putExtra("imageDetails",image)*/
             startActivity(intent)
 
         }
@@ -79,16 +82,7 @@ class CategorieActivity : AppCompatActivity() {
                     adapter.refreshList(filterList.items)
                 }
 
-                /*recyclerView.adapter = CustomAdapter(filterList[0].items) { title: String, price: String, image: String ->
 
-
-
-                    val intent = Intent(this, DetailsDishesActivity::class.java)
-                    intent.putExtra("titleDetails", title)
-                    intent.putExtra("priceDetails", price)
-                    intent.putExtra("imageDetails",image)
-                    startActivity(intent)
-                }*/
 
 
 

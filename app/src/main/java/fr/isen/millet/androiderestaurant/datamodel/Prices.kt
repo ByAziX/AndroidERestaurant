@@ -9,4 +9,4 @@ data class Prices(
     val update_date: String,
     val size: String
 
-)
+) : java.io.Serializable
