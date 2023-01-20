@@ -1,24 +1,23 @@
 package fr.isen.millet.androiderestaurant
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import com.squareup.picasso.Picasso
+import fr.isen.millet.androiderestaurant.CustomDetailsAdapter
 import fr.isen.millet.androiderestaurant.databinding.ActivityDetailsDishesBinding
+import fr.isen.millet.androiderestaurant.datamodel.CartContainer
+import fr.isen.millet.androiderestaurant.datamodel.CartItems
 import fr.isen.millet.androiderestaurant.datamodel.Items
-import fr.isen.millet.androiderestaurant.datamodel.Prices
-import java.io.File
+
 
 class DetailsDishesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsDishesBinding
     private var quantity = 1
     private var price = 0.0
+    private lateinit var cartContainer: CartContainer
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +36,8 @@ class DetailsDishesActivity : AppCompatActivity() {
             ingredients += i.name_fr + " "
         }
 
+
+
         binding.ingrediensDetails.text = ingredients
 
 
@@ -45,8 +46,19 @@ class DetailsDishesActivity : AppCompatActivity() {
         val adapter = CustomDetailsAdapter(items.images as ArrayList<String>)
         viewPager.adapter = adapter
 
-        ChangePriceToCart(items)
-        addDishToCart(items)
+        binding.buttonIncrease.setOnClickListener {
+            IncreasePriceAndQuantityToCart(items)
+        }
+
+        binding.buttonDecrease.setOnClickListener {
+            decreasePriceAndQuantityToCart(items)
+        }
+
+
+        binding.buttonPriceDetails.setOnClickListener {
+            addDishToCart(items)
+        }
+
 
         //val adapter = ViewPagerAdapter(this, items.images)
 
@@ -54,43 +66,60 @@ class DetailsDishesActivity : AppCompatActivity() {
     }
 
 
-    // increase quantity when we click on the button
+
 
     @SuppressLint("SetTextI18n")
-    fun ChangePriceToCart( items: Items) {
+    fun IncreasePriceAndQuantityToCart( items: Items) {
 
-        binding.buttonIncrease.setOnClickListener {
             quantity++
             price = items.prices[0].price * quantity
             binding.buttonPriceDetails.text = "Total Price " + (price).toString() + "€"
             binding.textViewQuantity.text = quantity.toString()
-        }
 
-        // decrease quantity when we click on the button
-        binding.buttonDecrease.setOnClickListener {
+
+    }
+
+    fun decreasePriceAndQuantityToCart( items: Items) {
+
+
             if (quantity > 1) {
                 quantity--
                 price = items.prices[0].price * quantity
                 binding.buttonPriceDetails.text = "Total Price " + (price).toString() + "€"
                 binding.textViewQuantity.text = quantity.toString()
             }
-        }
-    }
-
-    fun addDishToCart(items: Items) {
-        binding.buttonPriceDetails.setOnClickListener {
-            Snackbar.make(it, "Added to cart", Snackbar.LENGTH_LONG).show()
-
-            val jsonObject = Gson()
-            val json = jsonObject.toJson(items)
-            Log.i("json", json)
-            val file = File(this.filesDir, "cart.json")
-            file.appendText("$json $quantity $price ")
-            Log.i("file", file.readText())
 
         }
 
+     private fun addDishToCart(items: Items) {
 
-    }
+         Snackbar.make(binding.root, "Dish added to cart", Snackbar.LENGTH_SHORT).show()
+
+           /* if (cartContainer.cartItemsList.contains(CartItems(items, quantity))) {
+
+                val index = cartContainer.cartItemsList.indexOf(CartItems(items, quantity))
+
+                val item = cartContainer.cartItemsList[index]
+
+                item.quantity += quantity
+
+                cartContainer.cartItemsList[index] = item
+            } else {
+                cartContainer.cartItemsList.add(CartItems(items, quantity))
+
+            }*/
+            //cartContainer.cartItemsList.add(CartItems(items, quantity))
+
+         /*val json = Gson().toJson(cartContainer)
+         getSharedPreferences("cart", MODE_PRIVATE).edit().putString("cart", json).apply()
+         Log.i("cart", json)*/
+
+        }
+
+
+
+
+
+
 
 }

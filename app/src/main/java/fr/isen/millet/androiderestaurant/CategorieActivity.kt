@@ -1,13 +1,12 @@
 package fr.isen.millet.androiderestaurant
 
 import CustomAdapter
-import android.R
-import android.annotation.SuppressLint
 import android.content.Intent
+
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
