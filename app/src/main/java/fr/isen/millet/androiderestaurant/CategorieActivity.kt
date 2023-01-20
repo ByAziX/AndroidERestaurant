@@ -41,7 +41,7 @@ class CategorieActivity : AppCompatActivity() {
         binding.TitleCategorie.text =
             intent.extras?.getString("TitleCategorie") ?: "No Categorie title found"
 
-        actionBar?.title = binding.TitleCategorie.text
+        title = binding.TitleCategorie.text
 
 
         val recyclerView = binding.recyclerview

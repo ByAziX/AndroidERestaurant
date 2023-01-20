@@ -21,6 +21,7 @@ class DetailsDishesActivity : AppCompatActivity() {
 
         val items = intent.extras?.getSerializable("Items") as Items
         binding.titleDetailsDishes.text = items.name_fr ?: "No Categorie title found"
+        title=items.name_fr
         binding.priceDetailsDishes.text = items.prices[0].price.toString() ?: "No Categorie title found"
 
         var ingredients = ""

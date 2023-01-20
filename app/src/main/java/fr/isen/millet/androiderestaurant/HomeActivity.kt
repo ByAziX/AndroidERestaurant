@@ -17,6 +17,8 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        title="Home"
+
         //val buttonStarter = findViewById<Button>(R.id.StarterButton)
         //val buttonPlats = findViewById<Button>(R.id.platButton)
         //val buttonDesserts = findViewById<Button>(R.id.DessertButton)
