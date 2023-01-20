@@ -52,6 +52,12 @@ class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickL
 
     }
 
+    fun refreshList(newList: ArrayList<Items>) {
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
+
     // return the number of the items in the list
     override fun getItemCount(): Int = list.size
 

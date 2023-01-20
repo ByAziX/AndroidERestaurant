@@ -1,8 +1,6 @@
 package fr.isen.millet.androiderestaurant.datamodel
 
-import java.util.*
-
-data class Ingredient(
+data class Ingredients(
     val id:Int,
     val id_shop:Int,
     val name_fr:String,

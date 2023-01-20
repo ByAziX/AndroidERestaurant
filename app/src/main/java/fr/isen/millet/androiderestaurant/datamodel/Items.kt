@@ -8,7 +8,7 @@ data class Items(
     val categories_name_fr: String,
     val categories_name_en: String,
     val images : List<String>,
-    val ingredients: ArrayList<Ingredient>,
+    val ingredients: ArrayList<Ingredients>,
     val prices: ArrayList<Prices>
 ){
 

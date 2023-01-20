@@ -44,7 +44,20 @@ class CategorieActivity : AppCompatActivity() {
         actionBar?.title = binding.TitleCategorie.text
 
 
+        val recyclerView = binding.recyclerview
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
+        recyclerView.adapter = CustomAdapter(arrayListOf()) { title: String, price: String, image: String ->
+
+
+
+            val intent = Intent(this, DetailsDishesActivity::class.java)
+            intent.putExtra("titleDetails", title)
+            intent.putExtra("priceDetails", price)
+            intent.putExtra("imageDetails",image)
+            startActivity(intent)
+
+        }
         val json = JSONObject()
         json.put("id_shop", "1")
 
@@ -55,15 +68,18 @@ class CategorieActivity : AppCompatActivity() {
 
                 val gson = Gson()
                 val list: Data = gson.fromJson(it.toString(), Data::class.java)
-                val filterList = list.data.filter { it.name_fr == binding.TitleCategorie.text }
+                val filterList = list.data.firstOrNull() { it.name_fr == binding.TitleCategorie.text }
             //get items from the list
                 binding.pBar.visibility = View.GONE
 
                 Log.d("filterList", list.toString())
 
-                val recyclerView = binding.recyclerview
-                recyclerView.layoutManager = LinearLayoutManager(this)
-                recyclerView.adapter = CustomAdapter(filterList[0].items) { title: String, price: String, image: String ->
+                val adapter = binding.recyclerview.adapter as CustomAdapter
+                if (filterList != null) {
+                    adapter.refreshList(filterList.items)
+                }
+
+                /*recyclerView.adapter = CustomAdapter(filterList[0].items) { title: String, price: String, image: String ->
 
 
 
@@ -72,7 +88,9 @@ class CategorieActivity : AppCompatActivity() {
                     intent.putExtra("priceDetails", price)
                     intent.putExtra("imageDetails",image)
                     startActivity(intent)
-                }
+                }*/
+
+
 
 
 
