@@ -1,6 +1,6 @@
 package fr.isen.millet.androiderestaurant.datamodel
 
-data class Plat(
+data class Items(
     val id: Int,
     val id_category: Int,
     val name_fr: String,

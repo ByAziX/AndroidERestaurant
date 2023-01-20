@@ -1,10 +1,13 @@
 package fr.isen.millet.androiderestaurant
 
 import CustomAdapter
+import android.R
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
@@ -32,6 +35,9 @@ class CategorieActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //val title = findViewById<TextView>(R.id.TitleCategorie)
+
+
+        binding.pBar.visibility = View.VISIBLE
         binding.TitleCategorie.text =
             intent.extras?.getString("TitleCategorie") ?: "No Categorie title found"
 
@@ -51,12 +57,14 @@ class CategorieActivity : AppCompatActivity() {
                 val list: Data = gson.fromJson(it.toString(), Data::class.java)
                 val filterList = list.data.filter { it.name_fr == binding.TitleCategorie.text }
             //get items from the list
+                binding.pBar.visibility = View.GONE
 
                 Log.d("filterList", list.toString())
 
                 val recyclerView = binding.recyclerview
                 recyclerView.layoutManager = LinearLayoutManager(this)
                 recyclerView.adapter = CustomAdapter(filterList[0].items) { title: String, price: String, image: String ->
+
 
 
                     val intent = Intent(this, DetailsDishesActivity::class.java)

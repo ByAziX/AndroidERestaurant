@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import fr.isen.millet.androiderestaurant.R
-import fr.isen.millet.androiderestaurant.datamodel.Plat
+import fr.isen.millet.androiderestaurant.datamodel.Items
 
-class CustomAdapter(private val list: ArrayList<Plat>, private val OnItemClickListener: (String,String,String) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickListener: (String, String, String) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
     // adapter conteneur
     // RecyclerView contenu
     // Holds the views for adding it to text
