@@ -42,7 +42,6 @@ class HomeActivity : AppCompatActivity() {
 fun ChangePage(Button: Button) {
     val intent = Intent(this, CategorieActivity::class.java)
     Toast.makeText(this@HomeActivity,Button.text,Toast.LENGTH_SHORT).show()
-    Snackbar.make(binding.root,Button.text,Snackbar.LENGTH_SHORT).show()
     intent.putExtra("TitleCategorie",Button.text)
     startActivity(intent)
 }
