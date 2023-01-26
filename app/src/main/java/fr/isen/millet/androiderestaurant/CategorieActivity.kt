@@ -81,13 +81,6 @@ class CategorieActivity : AppCompatActivity() {
                     adapter.refreshList(filterList.items)
                 }
 
-
-
-
-
-
-
-
             },
              {
 

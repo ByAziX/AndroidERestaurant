@@ -12,14 +12,18 @@ import fr.isen.millet.androiderestaurant.databinding.ActivityDetailsDishesBindin
 import fr.isen.millet.androiderestaurant.datamodel.CartContainer
 import fr.isen.millet.androiderestaurant.datamodel.CartItems
 import fr.isen.millet.androiderestaurant.datamodel.Items
+import fr.isen.millet.androiderestaurant.datamodel.Prices
 import java.io.File
+import kotlin.properties.Delegates
 
 
 class DetailsDishesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsDishesBinding
-    private var quantity = 1
-    private var price = 0.0
+    private var quantityCount: Int = 0
+    var quantityTotal: Int = 1
     private lateinit var cartContainer: CartContainer
+    private var ingredients = ""
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,97 +31,103 @@ class DetailsDishesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val items = intent.extras?.getSerializable("Items") as Items
-        binding.titleDetailsDishes.text = items.name_fr ?: "No Categorie title found"
+        binding.titleDetailsDishes.text = items.name_fr
         title=items.name_fr
         binding.priceDetailsDishes.text = items.prices[0].price.toString() + "€"
-        binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price).toString() + "€"
-        cartContainer= CartContainer(mutableListOf())
+        binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price * quantityTotal).toString() + "€"
 
-        var ingredients = ""
+        if (fileExists()){
+            readFromFile()
+            priceAndQuantityToCart(items)
+
+        } else {
+            cartContainer = CartContainer(mutableListOf())
+            quantityTotal = 1
+        }
+
+        priceAndQuantityToCart(items)
+
         for (i in items.ingredients) {
             Log.i("Ingredients", i.name_fr)
             ingredients += i.name_fr + " "
         }
 
-
-
         binding.ingrediensDetails.text = ingredients
-
-
 
         val viewPager = binding.viewPagerDetailsImages
         val adapter = CustomDetailsAdapter(items.images as ArrayList<String>)
+
         viewPager.adapter = adapter
 
         binding.buttonIncrease.setOnClickListener {
-            IncreasePriceAndQuantityToCart(items)
+            quantityCount++
+            priceAndQuantityToCart(items)
         }
 
         binding.buttonDecrease.setOnClickListener {
-            decreasePriceAndQuantityToCart(items)
+            if (quantityCount > 1) {
+                quantityCount--
+                priceAndQuantityToCart(items)
+            }
         }
-
 
         binding.buttonPriceDetails.setOnClickListener {
             addDishToCart(items)
         }
-
-
-        //val adapter = ViewPagerAdapter(this, items.images)
-
-
     }
 
-
-
-
-    @SuppressLint("SetTextI18n")
-    fun IncreasePriceAndQuantityToCart( items: Items) {
-
-            quantity++
-            price = items.prices[0].price * quantity
-            binding.buttonPriceDetails.text = "Total Price " + (price).toString() + "€"
-            binding.textViewQuantity.text = quantity.toString()
-
-
-    }
-
-    fun decreasePriceAndQuantityToCart( items: Items) {
-
-
-            if (quantity > 1) {
-                quantity--
-                price = items.prices[0].price * quantity
-                binding.buttonPriceDetails.text = "Total Price " + (price).toString() + "€"
-                binding.textViewQuantity.text = quantity.toString()
-            }
-
-        }
+@SuppressLint("SetTextI18n")
+fun priceAndQuantityToCart(items: Items){
+    for (i in cartContainer.cartItemsList) {
+        if (i.items.id == items.id) {
+            quantityTotal = i.quantity + quantityCount
+            binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price * (quantityTotal)).toString() + "€"
+            binding.textViewQuantity.text = (quantityTotal).toString()
+        }}
+}
 
      private fun addDishToCart(items: Items) {
 
          Snackbar.make(binding.root, "Dish added to cart", Snackbar.LENGTH_SHORT).show()
 
-              if (cartContainer.cartItemsList.contains(CartItems(items, quantity))) {
+         // add to cart container if not already in it and update quantity if already in it
 
-                val index = cartContainer.cartItemsList.indexOf(CartItems(items, quantity))
-
-                val item = cartContainer.cartItemsList[index]
-
-                item.quantity += quantity
-
-                cartContainer.cartItemsList[index] = item
+            if (cartContainer.cartItemsList.isEmpty()) {
+                cartContainer.cartItemsList.add(CartItems(items, quantityTotal))
             } else {
-                cartContainer.cartItemsList.add(CartItems(items, quantity))
-
+                var alreadyInCart = false
+                for (i in cartContainer.cartItemsList) {
+                    if (i.items.id == items.id) {
+                        i.quantity = quantityTotal
+                        alreadyInCart = true
+                    }
+                }
+                if (!alreadyInCart) {
+                    cartContainer.cartItemsList.add(CartItems(items, quantityTotal))
+                }
             }
 
-            val json = GsonBuilder().setPrettyPrinting().create().toJson(cartContainer)
-            val file = File(filesDir, "cart.json")
-            file.writeText(json)
+         writeInFile()
+     }
+
+    private fun writeInFile() {
+        val json = GsonBuilder().setPrettyPrinting().create().toJson(cartContainer)
+        val file = File(filesDir, "cart.json")
+        file.writeText(json)
+    }
+
+    private fun readFromFile() {
+        val jsonFile = File(filesDir, "cart.json")
+        val jsonContent = jsonFile.readText()
+        val gson = Gson()
+        cartContainer = gson.fromJson(jsonContent, CartContainer::class.java)
+    }
 
 
-        }
+    fun fileExists(): Boolean {
+        val file = File(filesDir, "cart.json")
+        return file.exists()
+    }
 
 
 
