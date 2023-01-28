@@ -1,9 +1,11 @@
 package fr.isen.millet.androiderestaurant.pages
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -20,15 +22,34 @@ import java.io.File
 class DetailsDishesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsDishesBinding
     private var quantityCount: Int = 0
-    var quantityTotal: Int = 1
+    private var quantityTotal: Int = 1
     private lateinit var cartContainer: CartContainer
     private var ingredients = ""
 
-    override fun onCreateOptionsMenu(menu: Menu) : Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main_menu, menu);
-        return true;
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        val cartItem=menu?.findItem(R.id.action_cart)
+        val cartView=cartItem?.actionView
+
+        cartView?.setOnClickListener {
+            onOptionsItemSelected(cartItem)
+        }
+        return true
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            R.id.action_cart -> {
+                val intent = Intent(this, CartActivity::class.java)
+                startActivity(intent)
+            }
+
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

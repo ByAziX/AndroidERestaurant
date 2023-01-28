@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/yellow"
     android:orientation="vertical"
-    tools:context=".CategorieActivity">
+    tools:context=".pages.CategorieActivity">
 
 
     <androidx.recyclerview.widget.RecyclerView

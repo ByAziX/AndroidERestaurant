@@ -1,11 +1,11 @@
-package fr.isen.millet.androiderestaurant
+package fr.isen.millet.androiderestaurant.pages
 
 import CustomAdapter
-import android.content.Intent
-
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,10 +14,9 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.databinding.ActivityCategorieBinding
 import fr.isen.millet.androiderestaurant.datamodel.Data
-import fr.isen.millet.androiderestaurant.pages.CartActivity
-import fr.isen.millet.androiderestaurant.pages.DetailsDishesActivity
 import org.json.JSONObject
 
 
@@ -31,22 +30,38 @@ class CategorieActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategorieBinding
     private var url = "http://test.api.catering.bluecodegames.com/menu"
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        val cartItem=menu?.findItem(R.id.action_cart)
+        val cartView=cartItem?.actionView
+
+        cartView?.setOnClickListener {
+            onOptionsItemSelected(cartItem)
+        }
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.cart_badge->{
-                val intent = Intent(this, CartActivity::class.java)
-                startActivity(intent)
-            }
+        if(item.itemId==R.id.action_cart){
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
         }
         return super.onOptionsItemSelected(item)
     }
 
-    @SuppressLint("AppCompatMethod")
+
+
+
+    @SuppressLint("AppCompatMethod", "WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategorieBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+
+
+
 
 
         //val title = findViewById<TextView>(R.id.TitleCategorie)
@@ -59,18 +74,14 @@ class CategorieActivity : AppCompatActivity() {
         title = binding.TitleCategorie.text
 
 
+
         val recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         recyclerView.adapter = CustomAdapter(arrayListOf()) { //title: String, price: String, image: String ->
 
             val intent = Intent(this, DetailsDishesActivity::class.java)
-
             intent.putExtra("Items", it)
-
-          /*  intent.putExtra("titleDetails", title)
-            intent.putExtra("priceDetails", price)
-            intent.putExtra("imageDetails",image)*/
             startActivity(intent)
 
         }
@@ -103,36 +114,6 @@ class CategorieActivity : AppCompatActivity() {
 
 
         Volley.newRequestQueue(this).add(request)
-
-
-       /* val recyclerView = binding.recyclerview
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        val dishes = when (binding.TitleCategorie.text) {
-            Categorie.ENTREES.value -> resources.getStringArray(R.array.starter)
-                .toList() as ArrayList<String>
-
-            Categorie.PLATS.value -> resources.getStringArray(R.array.plats)
-                .toList() as ArrayList<String>
-
-            Categorie.DESSERT.value -> resources.getStringArray(R.array.desserts)
-                .toList() as ArrayList<String>
-            else -> arrayListOf()
-        }
-
-
-
-        recyclerView.adapter = CustomAdapter(dishes) {
-            val intent = Intent(this, DetailsDishesActivity::class.java)
-            Toast.makeText(this@CategorieActivity, it, Toast.LENGTH_SHORT).show()
-            intent.putExtra("titleDetails", it)
-            startActivity(intent)
-        }
-*/
-
-
-
-
     }
     override fun onDestroy() {
         super.onDestroy()

@@ -5,19 +5,31 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
-import fr.isen.millet.androiderestaurant.CategorieActivity
 import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
-    override fun onCreateOptionsMenu(menu: Menu) : Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main_menu, menu);
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu,menu)
+        val cartItem=menu?.findItem(R.id.action_cart)
+        val cartView=cartItem?.actionView
 
-        return true;
+        cartView?.setOnClickListener {
+            onOptionsItemSelected(cartItem)
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId==R.id.action_cart){
+            val intent = Intent(this, CartActivity::class.java)
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
@@ -32,10 +44,10 @@ class HomeActivity : AppCompatActivity() {
         //val buttonStarter = findViewById<Button>(R.id.StarterButton)
         //val buttonPlats = findViewById<Button>(R.id.platButton)
         //val buttonDesserts = findViewById<Button>(R.id.DessertButton)
-        binding.EntreesButton .setOnClickListener{
+        binding.EntreesButton.setOnClickListener{
             ChangePage(binding.EntreesButton)
         }
-        binding.plastButton .setOnClickListener{
+        binding.plastButton.setOnClickListener{
             ChangePage(binding.plastButton)
         }
         binding.DessertButton.setOnClickListener{
