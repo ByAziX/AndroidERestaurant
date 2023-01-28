@@ -31,6 +31,13 @@ class DetailsDishesActivity : AppCompatActivity() {
         val cartItem=menu?.findItem(R.id.action_cart)
         val cartView=cartItem?.actionView
 
+        val backArrowItem=menu?.findItem(androidx.appcompat.R.id.home)
+        val backArrowView=backArrowItem?.actionView
+
+        backArrowView?.setOnClickListener {
+            onOptionsItemSelected(backArrowItem)
+        }
+
         cartView?.setOnClickListener {
             onOptionsItemSelected(cartItem)
         }
@@ -44,8 +51,9 @@ class DetailsDishesActivity : AppCompatActivity() {
                 val intent = Intent(this, CartActivity::class.java)
                 startActivity(intent)
             }
-
-
+            android.R.id.home -> {
+                finish()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -70,8 +78,6 @@ class DetailsDishesActivity : AppCompatActivity() {
 
         if (fileExists()){
             readFromFile()
-            priceAndQuantityToCart(items)
-
         } else {
             cartContainer = CartContainer(mutableListOf())
             quantityTotal = 1
@@ -97,7 +103,7 @@ class DetailsDishesActivity : AppCompatActivity() {
         }
 
         binding.buttonDecrease.setOnClickListener {
-            if (quantityCount > 1) {
+            if (quantityTotal > 1) {
                 quantityCount--
                 priceAndQuantityToCart(items)
             }
@@ -156,7 +162,7 @@ fun priceAndQuantityToCart(items: Items){
     }
 
 
-    fun fileExists(): Boolean {
+    private fun fileExists(): Boolean {
         val file = File(filesDir, "cart.json")
         return file.exists()
     }
