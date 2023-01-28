@@ -1,4 +1,4 @@
-package fr.isen.millet.androiderestaurant
+package fr.isen.millet.androiderestaurant.pages
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -12,9 +12,7 @@ import fr.isen.millet.androiderestaurant.databinding.ActivityDetailsDishesBindin
 import fr.isen.millet.androiderestaurant.datamodel.CartContainer
 import fr.isen.millet.androiderestaurant.datamodel.CartItems
 import fr.isen.millet.androiderestaurant.datamodel.Items
-import fr.isen.millet.androiderestaurant.datamodel.Prices
 import java.io.File
-import kotlin.properties.Delegates
 
 
 class DetailsDishesActivity : AppCompatActivity() {
@@ -128,11 +126,4 @@ fun priceAndQuantityToCart(items: Items){
         val file = File(filesDir, "cart.json")
         return file.exists()
     }
-
-
-
-
-
-
-
 }

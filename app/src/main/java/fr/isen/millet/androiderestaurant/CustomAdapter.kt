@@ -42,27 +42,18 @@ class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickL
             Log.d("image", itemsViewModel.images[0])
 
         }
-
-
-
-
         holder.itemView.setOnClickListener{
             OnItemClickListener(itemsViewModel)
         }
-
     }
-
     @SuppressLint("NotifyDataSetChanged")
     fun refreshList(newList: ArrayList<Items>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()
     }
-
     // return the number of the items in the list
     override fun getItemCount(): Int = list.size
-
-
 
 }
 

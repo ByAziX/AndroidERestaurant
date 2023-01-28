@@ -14,13 +14,13 @@
         android:theme="@style/Theme.AndroidERestaurant"
         tools:targetApi="31">
         <activity
-            android:name=".DetailsDishesActivity"
+            android:name=".pages.DetailsDishesActivity"
             android:exported="false" />
         <activity
             android:name=".CategorieActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".pages.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

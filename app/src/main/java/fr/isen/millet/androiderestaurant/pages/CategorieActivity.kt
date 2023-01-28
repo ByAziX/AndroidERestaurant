@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import fr.isen.millet.androiderestaurant.databinding.ActivityCategorieBinding
 import fr.isen.millet.androiderestaurant.datamodel.Data
+import fr.isen.millet.androiderestaurant.pages.DetailsDishesActivity
 import org.json.JSONObject
 
 
@@ -26,7 +27,7 @@ enum class Categorie(val value: String) {
 
 class CategorieActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategorieBinding
-    var url = "http://test.api.catering.bluecodegames.com/menu"
+    private var url = "http://test.api.catering.bluecodegames.com/menu"
     @SuppressLint("AppCompatMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,8 +48,6 @@ class CategorieActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         recyclerView.adapter = CustomAdapter(arrayListOf()) { //title: String, price: String, image: String ->
-
-
 
             val intent = Intent(this, DetailsDishesActivity::class.java)
 
@@ -71,7 +70,7 @@ class CategorieActivity : AppCompatActivity() {
                 val gson = Gson()
                 val list: Data = gson.fromJson(it.toString(), Data::class.java)
                 val filterList = list.data.firstOrNull() { it.name_fr == binding.TitleCategorie.text }
-            //get items from the list
+                //get items from the list
                 binding.pBar.visibility = View.GONE
 
                 Log.d("filterList", list.toString())

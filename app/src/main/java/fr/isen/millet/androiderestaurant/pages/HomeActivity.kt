@@ -1,13 +1,12 @@
-package fr.isen.millet.androiderestaurant
+package fr.isen.millet.androiderestaurant.pages
 
 import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
+import fr.isen.millet.androiderestaurant.CategorieActivity
 import fr.isen.millet.androiderestaurant.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
@@ -45,6 +44,4 @@ fun ChangePage(Button: Button) {
     intent.putExtra("TitleCategorie",Button.text)
     startActivity(intent)
 }
-
-
 }
