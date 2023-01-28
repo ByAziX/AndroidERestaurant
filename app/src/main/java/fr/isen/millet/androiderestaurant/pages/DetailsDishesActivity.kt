@@ -3,11 +3,13 @@ package fr.isen.millet.androiderestaurant.pages
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fr.isen.millet.androiderestaurant.CustomDetailsAdapter
+import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.databinding.ActivityDetailsDishesBinding
 import fr.isen.millet.androiderestaurant.datamodel.CartContainer
 import fr.isen.millet.androiderestaurant.datamodel.CartItems
@@ -22,6 +24,11 @@ class DetailsDishesActivity : AppCompatActivity() {
     private lateinit var cartContainer: CartContainer
     private var ingredients = ""
 
+    override fun onCreateOptionsMenu(menu: Menu) : Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +37,15 @@ class DetailsDishesActivity : AppCompatActivity() {
 
         val items = intent.extras?.getSerializable("Items") as Items
         binding.titleDetailsDishes.text = items.name_fr
-        title=items.name_fr
         binding.priceDetailsDishes.text = items.prices[0].price.toString() + "€"
         binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price * quantityTotal).toString() + "€"
+
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.subtitle = items.name_fr
+        supportActionBar?.title= items.name_en
+
+
 
         if (fileExists()){
             readFromFile()

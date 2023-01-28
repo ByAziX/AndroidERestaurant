@@ -4,20 +4,30 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.widget.Button
 import android.widget.Toast
 import fr.isen.millet.androiderestaurant.CategorieActivity
+import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
+    override fun onCreateOptionsMenu(menu: Menu) : Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main_menu, menu);
+
+        return true;
+    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        title="Home"
+        supportActionBar?.title = "Home"
 
         //val buttonStarter = findViewById<Button>(R.id.StarterButton)
         //val buttonPlats = findViewById<Button>(R.id.platButton)

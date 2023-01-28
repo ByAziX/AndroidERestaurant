@@ -6,6 +6,7 @@ import android.content.Intent
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import fr.isen.millet.androiderestaurant.databinding.ActivityCategorieBinding
 import fr.isen.millet.androiderestaurant.datamodel.Data
+import fr.isen.millet.androiderestaurant.pages.CartActivity
 import fr.isen.millet.androiderestaurant.pages.DetailsDishesActivity
 import org.json.JSONObject
 
@@ -28,11 +30,24 @@ enum class Categorie(val value: String) {
 class CategorieActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategorieBinding
     private var url = "http://test.api.catering.bluecodegames.com/menu"
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.cart_badge->{
+                val intent = Intent(this, CartActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     @SuppressLint("AppCompatMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCategorieBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         //val title = findViewById<TextView>(R.id.TitleCategorie)
 
