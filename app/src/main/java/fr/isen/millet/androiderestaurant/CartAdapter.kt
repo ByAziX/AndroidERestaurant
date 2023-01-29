@@ -8,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import fr.isen.millet.androiderestaurant.R
+import fr.isen.millet.androiderestaurant.datamodel.CartItems
 import fr.isen.millet.androiderestaurant.datamodel.Items
 
-class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickListener: (Items) -> Unit) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CartAdapter(private val list: ArrayList<CartItems>, private val OnItemClickListener: (Items) -> Unit) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
     // adapter conteneur
     // RecyclerView contenu
     // Holds the views for adding it to text
@@ -19,12 +20,13 @@ class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickL
         val textView: TextView = itemView.findViewById(R.id.textView)
         val imageView: ImageView = itemView.findViewById(R.id.imageview)
         val PricesView: TextView = itemView.findViewById(R.id.PricesView)
+        val QuantityView: TextView = itemView.findViewById(R.id.textQuantityCartView)
     }
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflates the card_view_design view
         // that is used to hold list item
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view_design_categorie, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_view_design_cart, parent, false)
         return ViewHolder(view)
     }
 
@@ -32,9 +34,10 @@ class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickL
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val itemsViewModel = list[position]
+        val itemsViewModel = list[position].items
         holder.textView.text = itemsViewModel.name_fr
         holder.PricesView.text = itemsViewModel.prices[0].price.toString() + "€"
+        holder.QuantityView.text = list[position].quantity.toString()
 
 
         if (itemsViewModel.images[0] != "") {
@@ -47,7 +50,7 @@ class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickL
         }
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun refreshList(newList: ArrayList<Items>) {
+    fun refreshList(newList: MutableList<CartItems>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()

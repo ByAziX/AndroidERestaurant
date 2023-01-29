@@ -21,18 +21,17 @@ import java.io.File
 
 class DetailsDishesActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailsDishesBinding
-    private var quantityCount: Int = 0
-    private var quantityTotal: Int = 1
+    private var quantityTotal: Int = 0
     private lateinit var cartContainer: CartContainer
     private var ingredients = ""
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu,menu)
-        val cartItem=menu?.findItem(R.id.action_cart)
-        val cartView=cartItem?.actionView
+        menuInflater.inflate(R.menu.main_menu, menu)
+        val cartItem = menu?.findItem(R.id.action_cart)
+        val cartView = cartItem?.actionView
 
-        val backArrowItem=menu?.findItem(androidx.appcompat.R.id.home)
-        val backArrowView=backArrowItem?.actionView
+        val backArrowItem = menu?.findItem(androidx.appcompat.R.id.home)
+        val backArrowView = backArrowItem?.actionView
 
         backArrowView?.setOnClickListener {
             onOptionsItemSelected(backArrowItem)
@@ -46,7 +45,7 @@ class DetailsDishesActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId){
+        when (item.itemId) {
             R.id.action_cart -> {
                 val intent = Intent(this, CartActivity::class.java)
                 startActivity(intent)
@@ -69,21 +68,10 @@ class DetailsDishesActivity : AppCompatActivity() {
         binding.priceDetailsDishes.text = items.prices[0].price.toString() + "€"
         binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price * quantityTotal).toString() + "€"
 
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.subtitle = items.name_fr
-        supportActionBar?.title= items.name_en
+        supportActionBar?.title = items.name_en
 
-
-
-        if (fileExists()){
-            readFromFile()
-        } else {
-            cartContainer = CartContainer(mutableListOf())
-            quantityTotal = 1
-        }
-
-        priceAndQuantityToCart(items)
 
         for (i in items.ingredients) {
             Log.i("Ingredients", i.name_fr)
@@ -97,14 +85,32 @@ class DetailsDishesActivity : AppCompatActivity() {
 
         viewPager.adapter = adapter
 
+
+        if (fileExists()) {
+            readFromFile()
+
+            for (i in cartContainer.cartItemsList) {
+                if (i.items.id == items.id) {
+                    quantityTotal = i.quantity
+                    priceAndQuantityToCart(items)
+                }
+            }
+
+        } else {
+            cartContainer = CartContainer(mutableListOf())
+            quantityTotal = 0
+        }
+        priceAndQuantityToCart(items)
+
+
         binding.buttonIncrease.setOnClickListener {
-            quantityCount++
+            quantityTotal++
             priceAndQuantityToCart(items)
         }
 
         binding.buttonDecrease.setOnClickListener {
-            if (quantityTotal > 1) {
-                quantityCount--
+            if (quantityTotal > 0) {
+                quantityTotal--
                 priceAndQuantityToCart(items)
             }
         }
@@ -114,39 +120,34 @@ class DetailsDishesActivity : AppCompatActivity() {
         }
     }
 
-@SuppressLint("SetTextI18n")
-fun priceAndQuantityToCart(items: Items){
-    for (i in cartContainer.cartItemsList) {
-        if (i.items.id == items.id) {
-            quantityTotal = i.quantity + quantityCount
-            binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price * (quantityTotal)).toString() + "€"
-            binding.textViewQuantity.text = (quantityTotal).toString()
-        }}
-}
+    @SuppressLint("SetTextI18n")
+    fun priceAndQuantityToCart(items: Items) {
+         binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price * ( quantityTotal)).toString() + "€"
+         binding.textViewQuantity.text = (quantityTotal).toString()
 
-     private fun addDishToCart(items: Items) {
+    }
 
-         Snackbar.make(binding.root, "Dish added to cart", Snackbar.LENGTH_SHORT).show()
+    private fun addDishToCart(items: Items) {
 
-         // add to cart container if not already in it and update quantity if already in it
+        Snackbar.make(binding.root, "Dish added to cart", Snackbar.LENGTH_SHORT).show()
+        // add to cart container if not already in it and update quantity if already in it
 
-            if (cartContainer.cartItemsList.isEmpty()) {
-                cartContainer.cartItemsList.add(CartItems(items, quantityTotal))
-            } else {
-                var alreadyInCart = false
-                for (i in cartContainer.cartItemsList) {
-                    if (i.items.id == items.id) {
-                        i.quantity = quantityTotal
-                        alreadyInCart = true
-                    }
-                }
-                if (!alreadyInCart) {
-                    cartContainer.cartItemsList.add(CartItems(items, quantityTotal))
+        if (cartContainer.cartItemsList.isEmpty()) {
+            cartContainer.cartItemsList.add(CartItems(items, quantityTotal))
+        } else {
+            var alreadyInCart = false
+            for (i in cartContainer.cartItemsList) {
+                if (i.items.id == items.id) {
+                    i.quantity = quantityTotal
+                    alreadyInCart = true
                 }
             }
-
-         writeInFile()
-     }
+            if (!alreadyInCart) {
+                cartContainer.cartItemsList.add(CartItems(items, quantityTotal))
+            }
+        }
+        writeInFile()
+    }
 
     private fun writeInFile() {
         val json = GsonBuilder().setPrettyPrinting().create().toJson(cartContainer)

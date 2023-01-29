@@ -25,14 +25,17 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId==R.id.action_cart){
-            val intent = Intent(this, CartActivity::class.java)
-            startActivity(intent)
+
+        when(item.itemId){
+            R.id.action_cart -> {
+                val intent = Intent(this, CartActivity::class.java)
+                startActivity(intent)
+            }
+
+
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

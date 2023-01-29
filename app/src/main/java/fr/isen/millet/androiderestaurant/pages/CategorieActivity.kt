@@ -35,6 +35,13 @@ class CategorieActivity : AppCompatActivity() {
         val cartItem=menu?.findItem(R.id.action_cart)
         val cartView=cartItem?.actionView
 
+        val backArrowItem=menu?.findItem(androidx.appcompat.R.id.home)
+        val backArrowView=backArrowItem?.actionView
+
+        backArrowView?.setOnClickListener {
+            onOptionsItemSelected(backArrowItem)
+        }
+
         cartView?.setOnClickListener {
             onOptionsItemSelected(cartItem)
         }
@@ -42,13 +49,20 @@ class CategorieActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId==R.id.action_cart){
-            val intent = Intent(this, CartActivity::class.java)
-            startActivity(intent)
+
+        when(item.itemId){
+            R.id.action_cart -> {
+                val intent = Intent(this, CartActivity::class.java)
+                startActivity(intent)
+            }
+            android.R.id.home -> {
+                finish()
+            }
+
+
         }
         return super.onOptionsItemSelected(item)
     }
-
 
 
 
@@ -59,13 +73,6 @@ class CategorieActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
-
-
-
-
-
-        //val title = findViewById<TextView>(R.id.TitleCategorie)
-
 
         binding.pBar.visibility = View.VISIBLE
         binding.TitleCategorie.text =
@@ -78,7 +85,7 @@ class CategorieActivity : AppCompatActivity() {
         val recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        recyclerView.adapter = CustomAdapter(arrayListOf()) { //title: String, price: String, image: String ->
+        recyclerView.adapter = CustomAdapter(arrayListOf()) {
 
             val intent = Intent(this, DetailsDishesActivity::class.java)
             intent.putExtra("Items", it)
@@ -98,8 +105,6 @@ class CategorieActivity : AppCompatActivity() {
                 val filterList = list.data.firstOrNull() { it.name_fr == binding.TitleCategorie.text }
                 //get items from the list
                 binding.pBar.visibility = View.GONE
-
-                Log.d("filterList", list.toString())
 
                 val adapter = binding.recyclerview.adapter as CustomAdapter
                 if (filterList != null) {
