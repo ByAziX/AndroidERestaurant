@@ -27,8 +27,11 @@ class DetailsDishesActivity : AppCompatActivity() {
     private lateinit var cartContainer: CartContainer
     private var ingredients = ""
     private var textCartItemCount: TextView? = null
+    private var absTopSubMenus: Menu? = null
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        absTopSubMenus = menu
         menuInflater.inflate(R.menu.main_menu, menu)
         textCartItemCount = menu?.findItem(R.id.action_cart)?.actionView?.findViewById(R.id.cart_badge)
         val cartItem = menu?.findItem(R.id.action_cart)
@@ -63,23 +66,14 @@ class DetailsDishesActivity : AppCompatActivity() {
 
     private fun setupBadge() {
 
-        val count = cartContainer.cartItemsList.size
+        if (File(filesDir, "cart.json").exists()) {
+            readFromFile()
 
-
-        if (textCartItemCount != null) {
-            if (count === 0) {
-                if (textCartItemCount?.visibility !== View.GONE) {
-                    textCartItemCount?.visibility = View.GONE
-                }
-            } else {
-                textCartItemCount?.text = java.lang.String.valueOf(count.coerceAtMost(99))
-                if (textCartItemCount!!.getVisibility() !== View.VISIBLE) {
-                    textCartItemCount?.visibility = View.VISIBLE
-                }
-            }
+            textCartItemCount?.text = cartContainer.cartItemsList.size.toString()
         }
+        else
+            textCartItemCount?.text = "0"
     }
-
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -169,7 +163,10 @@ class DetailsDishesActivity : AppCompatActivity() {
                 cartContainer.cartItemsList.add(CartItems(items, quantityTotal))
             }
         }
+
         writeInFile()
+        absTopSubMenus?.clear()
+        onCreateOptionsMenu(absTopSubMenus)
     }
 
     private fun writeInFile() {
@@ -179,10 +176,15 @@ class DetailsDishesActivity : AppCompatActivity() {
     }
 
     private fun readFromFile() {
+
         val jsonFile = File(filesDir, "cart.json")
-        val jsonContent = jsonFile.readText()
-        val gson = Gson()
-        cartContainer = gson.fromJson(jsonContent, CartContainer::class.java)
+        cartContainer = if (jsonFile.exists()) {
+            val json = jsonFile.readText()
+            Gson().fromJson(json, CartContainer::class.java)
+        } else {
+            CartContainer(arrayListOf())
+        }
+
     }
 
 

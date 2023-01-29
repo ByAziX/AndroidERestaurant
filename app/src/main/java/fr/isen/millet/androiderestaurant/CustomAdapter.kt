@@ -16,9 +16,9 @@ class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickL
     // Holds the views for adding it to text
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         // val imageView: ImageView = itemView.findViewById(R.id.imageview)
-        val textView: TextView = itemView.findViewById(R.id.textView)
-        val imageView: ImageView = itemView.findViewById(R.id.imageview)
-        val PricesView: TextView = itemView.findViewById(R.id.PricesView)
+        val textView: TextView = itemView.findViewById(R.id.textCategorieView)
+        val imageView: ImageView = itemView.findViewById(R.id.imageCategorieView)
+        val pricesView: TextView = itemView.findViewById(R.id.pricesCategorieView)
     }
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,7 +34,7 @@ class CustomAdapter(private val list: ArrayList<Items>, private val OnItemClickL
 
         val itemsViewModel = list[position]
         holder.textView.text = itemsViewModel.name_fr
-        holder.PricesView.text = itemsViewModel.prices[0].price.toString() + "€"
+        holder.pricesView.text = itemsViewModel.prices[0].price.toString() + "€"
 
 
         if (itemsViewModel.images[0] != "") {

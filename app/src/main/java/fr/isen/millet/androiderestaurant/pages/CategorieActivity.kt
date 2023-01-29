@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.databinding.ActivityCategorieBinding
@@ -34,8 +35,10 @@ class CategorieActivity : AppCompatActivity() {
     private var url = "http://test.api.catering.bluecodegames.com/menu"
     private lateinit var cartContainer: CartContainer
     private var textCartItemCount: TextView? = null
+    private var absTopSubMenus: Menu? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        absTopSubMenus = menu
         menuInflater.inflate(R.menu.main_menu, menu)
         textCartItemCount = menu?.findItem(R.id.action_cart)?.actionView?.findViewById(R.id.cart_badge)
         val cartItem = menu?.findItem(R.id.action_cart)
@@ -48,18 +51,22 @@ class CategorieActivity : AppCompatActivity() {
             onOptionsItemSelected(backArrowItem)
         }
 
-        cartView?.setOnClickListener {
-            onOptionsItemSelected(cartItem)
-        }
+
         setupBadge()
+
+        cartView?.setOnClickListener {
+                onOptionsItemSelected(cartItem)
+
+
+        }
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
             R.id.action_cart -> {
-                val intent = Intent(this, CartActivity::class.java)
-                startActivity(intent)
+                    val intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
             }
             android.R.id.home -> {
                 finish()
@@ -70,24 +77,14 @@ class CategorieActivity : AppCompatActivity() {
 
     private fun setupBadge() {
 
-        val count = cartContainer.cartItemsList.size
+        if (File(filesDir, "cart.json").exists()) {
+            readFromFile()
 
-
-        if (textCartItemCount != null) {
-            if (count === 0) {
-                if (textCartItemCount?.visibility !== View.GONE) {
-                    textCartItemCount?.visibility = View.GONE
-                }
-            } else {
-                textCartItemCount?.text = java.lang.String.valueOf(count.coerceAtMost(99))
-                if (textCartItemCount!!.getVisibility() !== View.VISIBLE) {
-                    textCartItemCount?.visibility = View.VISIBLE
-                }
-            }
+            textCartItemCount?.text = cartContainer.cartItemsList.size.toString()
         }
+        else
+            textCartItemCount?.text = "0"
     }
-
-
 
     @SuppressLint("AppCompatMethod", "WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,7 +102,6 @@ class CategorieActivity : AppCompatActivity() {
 
 
         readFromFile()
-
 
         val recyclerView = binding.recyclerview
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -144,6 +140,7 @@ class CategorieActivity : AppCompatActivity() {
 
 
         Volley.newRequestQueue(this).add(request)
+
     }
     override fun onDestroy() {
         super.onDestroy()
@@ -153,9 +150,12 @@ class CategorieActivity : AppCompatActivity() {
 
     private fun readFromFile() {
         val jsonFile = File(filesDir, "cart.json")
-        val jsonContent = jsonFile.readText()
-        val gson = Gson()
-        cartContainer = gson.fromJson(jsonContent, CartContainer::class.java)
+        cartContainer = if (jsonFile.exists()) {
+            val json = jsonFile.readText()
+            Gson().fromJson(json, CartContainer::class.java)
+        } else {
+            CartContainer(arrayListOf())
+        }
     }
 
 }

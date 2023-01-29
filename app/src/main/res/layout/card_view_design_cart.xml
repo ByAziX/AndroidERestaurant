@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="55dp"
     android:layout_margin="10dp"
     app:cardElevation="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:padding="5dp">
 
+
         <ImageView
-            android:id="@+id/imageview"
+            android:id="@+id/imageCartView"
             android:layout_width="40dp"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <LinearLayout
-            android:layout_width="286dp"
-            android:layout_height="match_parent"
+            android:layout_width="244dp"
+            android:layout_height="55dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/nameItemCartView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="15dp"
-                android:text="Item"
-                android:textSize="15sp"
+                android:text="TextView"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/PricesView"
+                android:id="@+id/pricesItemsCartView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -42,14 +44,16 @@
                 android:text="None"
                 android:textSize="10sp"
                 android:textStyle="normal" />
+
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textQuantityCartView"
+            android:id="@+id/quantityItemsCartView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="none" />
+            android:text="None"
+            android:textSize="10sp"
+            android:textStyle="normal" />
 
     </LinearLayout>
 

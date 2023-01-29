@@ -15,12 +15,14 @@ class CartAdapter(private val list: ArrayList<CartItems>, private val OnItemClic
     // adapter conteneur
     // RecyclerView contenu
     // Holds the views for adding it to text
+    private var pricesTotal: Double = 0.0
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
         // val imageView: ImageView = itemView.findViewById(R.id.imageview)
-        val textView: TextView = itemView.findViewById(R.id.textView)
-        val imageView: ImageView = itemView.findViewById(R.id.imageview)
-        val PricesView: TextView = itemView.findViewById(R.id.PricesView)
-        val QuantityView: TextView = itemView.findViewById(R.id.textQuantityCartView)
+        val textView: TextView = itemView.findViewById(R.id.nameItemCartView)
+        val imageView: ImageView = itemView.findViewById(R.id.imageCartView)
+        val pricesView: TextView = itemView.findViewById(R.id.pricesItemsCartView)
+        val quantityView: TextView = itemView.findViewById(R.id.quantityItemsCartView)
+
     }
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,8 +38,11 @@ class CartAdapter(private val list: ArrayList<CartItems>, private val OnItemClic
 
         val itemsViewModel = list[position].items
         holder.textView.text = itemsViewModel.name_fr
-        holder.PricesView.text = itemsViewModel.prices[0].price.toString() + "€"
-        holder.QuantityView.text = list[position].quantity.toString()
+        holder.pricesView.text = itemsViewModel.prices[0].price.toString() + "€"
+        holder.quantityView.text = "x"+list[position].quantity.toString()
+
+
+
 
 
         if (itemsViewModel.images[0] != "") {
