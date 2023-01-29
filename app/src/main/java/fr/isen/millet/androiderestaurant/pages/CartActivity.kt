@@ -27,25 +27,7 @@ class CartActivity : AppCompatActivity() {
 
         readFromFile()
 
-        if (cartContainer.cartItemsList.isNotEmpty()) {
-
-        val recyclerView = binding.recyclerviewCart
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        recyclerView.adapter =
-            CartAdapter(arrayListOf()) { cartItem ->
-
-                val intent = Intent(this, DetailsDishesActivity::class.java)
-                intent.putExtra("Items", cartItem)
-                startActivity(intent)
-            }
-
-        val adapter = recyclerView.adapter as CartAdapter
-        adapter.refreshList(cartContainer.cartItemsList)
-
-        } else
-            binding.TitleCart.text = "Votre panier est vide"
-
+        recyclerViewRefresh()
 
         calculateTotalPrice()
 
@@ -73,7 +55,6 @@ class CartActivity : AppCompatActivity() {
         binding.pBar.visibility = View.GONE
 
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun calculateTotalPrice() {
@@ -127,8 +108,28 @@ class CartActivity : AppCompatActivity() {
         readFromFile()
         checkQuantity()
         calculateTotalPrice()
-        val adapter = binding.recyclerviewCart.adapter as CartAdapter
-        adapter.refreshList(cartContainer.cartItemsList)
+        recyclerViewRefresh()
+
+    }
+
+
+    private fun recyclerViewRefresh(){
+        if (cartContainer.cartItemsList.isNotEmpty()) {
+            val recyclerView = binding.recyclerviewCart
+            recyclerView.layoutManager = LinearLayoutManager(this)
+
+            recyclerView.adapter =
+                CartAdapter(arrayListOf()) { cartItem ->
+
+                    val intent = Intent(this, DetailsDishesActivity::class.java)
+                    intent.putExtra("Items", cartItem)
+                    startActivity(intent)
+                }
+
+            val adapter = recyclerView.adapter as CartAdapter
+            adapter.refreshList(cartContainer.cartItemsList)
+        } else
+            binding.TitleCart.text = "Votre panier est vide"
     }
 
 
