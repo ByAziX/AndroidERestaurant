@@ -109,7 +109,7 @@ class DetailsDishesActivity : AppCompatActivity() {
             for (i in cartContainer.cartItemsList) {
                 if (i.items.id == items.id) {
                     quantityTotal = i.quantity
-                    priceAndQuantityToCart(items)
+                    refreshPriceAndQuantityToCart(items)
                 }
             }
 
@@ -117,18 +117,18 @@ class DetailsDishesActivity : AppCompatActivity() {
             cartContainer = CartContainer(mutableListOf())
             quantityTotal = 0
         }
-        priceAndQuantityToCart(items)
+        refreshPriceAndQuantityToCart(items)
 
 
         binding.buttonIncrease.setOnClickListener {
             quantityTotal++
-            priceAndQuantityToCart(items)
+            refreshPriceAndQuantityToCart(items)
         }
 
         binding.buttonDecrease.setOnClickListener {
             if (quantityTotal > 0) {
                 quantityTotal--
-                priceAndQuantityToCart(items)
+                refreshPriceAndQuantityToCart(items)
             }
         }
 
@@ -138,7 +138,7 @@ class DetailsDishesActivity : AppCompatActivity() {
     }
 
     @SuppressLint("SetTextI18n")
-    fun priceAndQuantityToCart(items: Items) {
+    fun refreshPriceAndQuantityToCart(items: Items) {
          binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price * ( quantityTotal)).toString() + "€"
          binding.textViewQuantity.text = (quantityTotal).toString()
 
@@ -146,7 +146,7 @@ class DetailsDishesActivity : AppCompatActivity() {
 
     private fun addDishToCart(items: Items) {
 
-        Snackbar.make(binding.root, "Dish added to cart", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(binding.root, "update du cart", Snackbar.LENGTH_SHORT).show()
         // add to cart container if not already in it and update quantity if already in it
 
         if (cartContainer.cartItemsList.isEmpty()) {
