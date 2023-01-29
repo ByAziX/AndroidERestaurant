@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
@@ -16,8 +17,10 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.databinding.ActivityCategorieBinding
+import fr.isen.millet.androiderestaurant.datamodel.CartContainer
 import fr.isen.millet.androiderestaurant.datamodel.Data
 import org.json.JSONObject
+import java.io.File
 
 
 enum class Categorie(val value: String) {
@@ -29,14 +32,17 @@ enum class Categorie(val value: String) {
 class CategorieActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCategorieBinding
     private var url = "http://test.api.catering.bluecodegames.com/menu"
+    private lateinit var cartContainer: CartContainer
+    private var textCartItemCount: TextView? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.main_menu,menu)
-        val cartItem=menu?.findItem(R.id.action_cart)
-        val cartView=cartItem?.actionView
+        menuInflater.inflate(R.menu.main_menu, menu)
+        textCartItemCount = menu?.findItem(R.id.action_cart)?.actionView?.findViewById(R.id.cart_badge)
+        val cartItem = menu?.findItem(R.id.action_cart)
+        val cartView = cartItem?.actionView
 
-        val backArrowItem=menu?.findItem(androidx.appcompat.R.id.home)
-        val backArrowView=backArrowItem?.actionView
+        val backArrowItem = menu?.findItem(androidx.appcompat.R.id.home)
+        val backArrowView = backArrowItem?.actionView
 
         backArrowView?.setOnClickListener {
             onOptionsItemSelected(backArrowItem)
@@ -45,12 +51,12 @@ class CategorieActivity : AppCompatActivity() {
         cartView?.setOnClickListener {
             onOptionsItemSelected(cartItem)
         }
+        setupBadge()
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId){
+        when (item.itemId) {
             R.id.action_cart -> {
                 val intent = Intent(this, CartActivity::class.java)
                 startActivity(intent)
@@ -58,10 +64,27 @@ class CategorieActivity : AppCompatActivity() {
             android.R.id.home -> {
                 finish()
             }
-
-
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupBadge() {
+
+        val count = cartContainer.cartItemsList.size
+
+
+        if (textCartItemCount != null) {
+            if (count === 0) {
+                if (textCartItemCount?.visibility !== View.GONE) {
+                    textCartItemCount?.visibility = View.GONE
+                }
+            } else {
+                textCartItemCount?.text = java.lang.String.valueOf(count.coerceAtMost(99))
+                if (textCartItemCount!!.getVisibility() !== View.VISIBLE) {
+                    textCartItemCount?.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
 
@@ -80,6 +103,8 @@ class CategorieActivity : AppCompatActivity() {
 
         title = binding.TitleCategorie.text
 
+
+        readFromFile()
 
 
         val recyclerView = binding.recyclerview
@@ -124,6 +149,13 @@ class CategorieActivity : AppCompatActivity() {
         super.onDestroy()
         Log.d ("onDestroy", "$this onDestroy")
     }
-}
 
-// curl -X POST http://test.api.catering.bluecodegames.com/menu -d '{"id_shop":"1"}'
+
+    private fun readFromFile() {
+        val jsonFile = File(filesDir, "cart.json")
+        val jsonContent = jsonFile.readText()
+        val gson = Gson()
+        cartContainer = gson.fromJson(jsonContent, CartContainer::class.java)
+    }
+
+}

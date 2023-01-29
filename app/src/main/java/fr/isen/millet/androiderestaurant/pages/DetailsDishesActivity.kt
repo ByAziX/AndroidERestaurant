@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -24,9 +26,11 @@ class DetailsDishesActivity : AppCompatActivity() {
     private var quantityTotal: Int = 0
     private lateinit var cartContainer: CartContainer
     private var ingredients = ""
+    private var textCartItemCount: TextView? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
+        textCartItemCount = menu?.findItem(R.id.action_cart)?.actionView?.findViewById(R.id.cart_badge)
         val cartItem = menu?.findItem(R.id.action_cart)
         val cartView = cartItem?.actionView
 
@@ -40,9 +44,9 @@ class DetailsDishesActivity : AppCompatActivity() {
         cartView?.setOnClickListener {
             onOptionsItemSelected(cartItem)
         }
+        setupBadge()
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
@@ -55,6 +59,25 @@ class DetailsDishesActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setupBadge() {
+
+        val count = cartContainer.cartItemsList.size
+
+
+        if (textCartItemCount != null) {
+            if (count === 0) {
+                if (textCartItemCount?.visibility !== View.GONE) {
+                    textCartItemCount?.visibility = View.GONE
+                }
+            } else {
+                textCartItemCount?.text = java.lang.String.valueOf(count.coerceAtMost(99))
+                if (textCartItemCount!!.getVisibility() !== View.VISIBLE) {
+                    textCartItemCount?.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
