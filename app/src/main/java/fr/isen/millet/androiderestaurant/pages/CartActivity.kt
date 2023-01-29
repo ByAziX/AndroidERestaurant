@@ -5,10 +5,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import fr.isen.millet.androiderestaurant.R
 import fr.isen.millet.androiderestaurant.databinding.ActivityCartBinding
 import fr.isen.millet.androiderestaurant.datamodel.CartContainer
 import java.io.File
@@ -18,14 +21,41 @@ class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
     private lateinit var cartContainer: CartContainer
 
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val backArrowItem = menu?.findItem(androidx.appcompat.R.id.home)
+        val backArrowView = backArrowItem?.actionView
+
+        backArrowView?.setOnClickListener {
+            onOptionsItemSelected(backArrowItem)
+        }
+
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.title = "Your Cart"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+
+
+
 
         readFromFile()
+        binding.TitleCart.text = "${cartContainer.cartItemsList.size} items dans ton cart"
 
         recyclerViewRefresh()
 
