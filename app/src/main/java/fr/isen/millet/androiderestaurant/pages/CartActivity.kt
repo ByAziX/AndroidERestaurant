@@ -52,13 +52,10 @@ class CartActivity : AppCompatActivity() {
 
         binding.priceAllCartView.setOnClickListener {
             if (cartContainer.cartItemsList.isNotEmpty()) {
+                Snackbar.make(it, "Prix total : ${binding.priceAllCartView.text}", Snackbar.LENGTH_LONG).show()
                 deleteAllItems()
-                Snackbar.make(it, "Votre panier a été vidé", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-
+                /*val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)*/
             }
         }
 
@@ -81,10 +78,20 @@ class CartActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun calculateTotalPrice() {
         var totalPrice = 0.0
-        for (cartItem in cartContainer.cartItemsList) {
-            totalPrice += cartItem.items.prices[0].price * cartItem.quantity
+        if (cartContainer.cartItemsList.isNotEmpty()) {
+            for (cartItem in cartContainer.cartItemsList) {
+                totalPrice += cartItem.items.prices[0].price * cartItem.quantity
+            }
+            binding.priceAllCartView.visibility = View.VISIBLE
+            binding.priceAllCartView.text = "Buy For " +totalPrice.toString() + "€"
         }
-        binding.priceAllCartView.text = "Buy For " +totalPrice.toString() + "€"
+        else{
+            binding.priceAllCartView.visibility = View.GONE
+            binding.TitleCart.text = "Votre panier est vide"
+
+        }
+
+
     }
 
     // function to delete all items in cart
@@ -97,13 +104,32 @@ class CartActivity : AppCompatActivity() {
         calculateTotalPrice()
     }
 
+    // check if one items in the cart is whith quantity = 0
+    private fun checkQuantity() {
+        for (cartItem in cartContainer.cartItemsList) {
+            if (cartItem.quantity == 0) {
+                cartContainer.cartItemsList.remove(cartItem)
+                // remove item from json file
+                val jsonFile = File(filesDir, "cart.json")
+                jsonFile.delete()
+                val json = Gson().toJson(cartContainer)
+                jsonFile.writeText(json)
+                val adapter = binding.recyclerviewCart.adapter as CartAdapter
+                adapter.refreshList(cartContainer.cartItemsList)
+                calculateTotalPrice()
 
-    fun deleteOneItem(view: View) {
+            }
+        }
+    }
 
-        cartContainer.cartItemsList.removeAt(0)
+    override fun onResume() {
+        super.onResume()
+        readFromFile()
+        checkQuantity()
+        calculateTotalPrice()
         val adapter = binding.recyclerviewCart.adapter as CartAdapter
         adapter.refreshList(cartContainer.cartItemsList)
-        calculateTotalPrice()
     }
+
 
 }
