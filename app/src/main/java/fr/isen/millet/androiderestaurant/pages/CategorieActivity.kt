@@ -37,6 +37,7 @@ class CategorieActivity : AppCompatActivity() {
     private var textCartItemCount: TextView? = null
     private var absTopSubMenus: Menu? = null
 
+    // function to create the menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         absTopSubMenus = menu
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -61,6 +62,7 @@ class CategorieActivity : AppCompatActivity() {
         }
         return true
     }
+    // function to handle the click on the menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
@@ -75,6 +77,7 @@ class CategorieActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    //function to update the number of items in the cart
     private fun setupBadge() {
 
         if (File(filesDir, "cart.json").exists()) {
@@ -86,6 +89,7 @@ class CategorieActivity : AppCompatActivity() {
             textCartItemCount?.text = "0"
     }
 
+    // function to read the cart file
     @SuppressLint("AppCompatMethod", "WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,12 +146,14 @@ class CategorieActivity : AppCompatActivity() {
         Volley.newRequestQueue(this).add(request)
 
     }
+    // function to read the cart file
     override fun onDestroy() {
         super.onDestroy()
         Log.d ("onDestroy", "$this onDestroy")
     }
 
 
+    // fonction to read the cart file
     private fun readFromFile() {
         val jsonFile = File(filesDir, "cart.json")
         cartContainer = if (jsonFile.exists()) {

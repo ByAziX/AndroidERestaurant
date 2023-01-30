@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +22,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
     private lateinit var cartContainer: CartContainer
 
-
+    // fonction qui permet de créer le menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val backArrowItem = menu?.findItem(androidx.appcompat.R.id.home)
         val backArrowView = backArrowItem?.actionView
@@ -32,6 +33,7 @@ class CartActivity : AppCompatActivity() {
 
         return true
     }
+    // fonction qui permet de gérer les actions du menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
@@ -42,6 +44,7 @@ class CartActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // fonction qui permet de créer l'activité
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,16 +54,12 @@ class CartActivity : AppCompatActivity() {
         supportActionBar?.title = "Your Cart"
         supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
-
-
-
         readFromFile()
         binding.TitleCart.text = "${cartContainer.cartItemsList.size} items dans ton cart"
 
         recyclerViewRefresh()
 
         calculateTotalPrice()
-
 
         binding.priceAllCartView.setOnClickListener {
             if (cartContainer.cartItemsList.isNotEmpty()) {
@@ -71,7 +70,7 @@ class CartActivity : AppCompatActivity() {
             }
         }
 
-    }
+    }// fonction qui permet de lire mon fichier cart.json
     private fun readFromFile() {
         binding.pBar.visibility = View.VISIBLE
 
@@ -86,6 +85,7 @@ class CartActivity : AppCompatActivity() {
 
     }
 
+    // fonction qui permet de calculer le prix total d'achat lors du clique sur le boutton
     @SuppressLint("SetTextI18n")
     private fun calculateTotalPrice() {
         var totalPrice = 0.0
@@ -133,6 +133,7 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
+    // fonction qui permet de check si il y a un element est à 0 ou non
     override fun onResume() {
         super.onResume()
         readFromFile()
@@ -142,7 +143,13 @@ class CartActivity : AppCompatActivity() {
 
     }
 
+    //
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d ("onDestroy", "$this onDestroy")
+    }
 
+    //fonction qui permet d'utiliser le recycler view et donc refresh le recycler viex
     private fun recyclerViewRefresh(){
         if (cartContainer.cartItemsList.isNotEmpty()) {
             val recyclerView = binding.recyclerviewCart
@@ -161,6 +168,4 @@ class CartActivity : AppCompatActivity() {
         } else
             binding.TitleCart.text = "Votre panier est vide"
     }
-
-
 }

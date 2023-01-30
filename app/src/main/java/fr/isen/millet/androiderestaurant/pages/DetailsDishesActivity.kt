@@ -30,6 +30,7 @@ class DetailsDishesActivity : AppCompatActivity() {
     private var absTopSubMenus: Menu? = null
 
 
+    // function to create the menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         absTopSubMenus = menu
         menuInflater.inflate(R.menu.main_menu, menu)
@@ -50,6 +51,7 @@ class DetailsDishesActivity : AppCompatActivity() {
         setupBadge()
         return true
     }
+    // function qui permet le click sur le menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
@@ -64,6 +66,7 @@ class DetailsDishesActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // function to add the quantity of items in the cart
     private fun setupBadge() {
 
         if (File(filesDir, "cart.json").exists()) {
@@ -137,6 +140,7 @@ class DetailsDishesActivity : AppCompatActivity() {
         }
     }
 
+    // function qui refresh le prix et la quantité dans le panier
     @SuppressLint("SetTextI18n")
     fun refreshPriceAndQuantityToCart(items: Items) {
          binding.buttonPriceDetails.text = "Total Price " + (items.prices[0].price * ( quantityTotal)).toString() + "€"
@@ -144,6 +148,7 @@ class DetailsDishesActivity : AppCompatActivity() {
 
     }
 
+    // function qui ajoute un plat au panier
     private fun addDishToCart(items: Items) {
 
         Snackbar.make(binding.root, "update du cart", Snackbar.LENGTH_SHORT).show()
@@ -169,12 +174,14 @@ class DetailsDishesActivity : AppCompatActivity() {
         onCreateOptionsMenu(absTopSubMenus)
     }
 
+    // function qui permet d'écrire dans le fichier
     private fun writeInFile() {
         val json = GsonBuilder().setPrettyPrinting().create().toJson(cartContainer)
         val file = File(filesDir, "cart.json")
         file.writeText(json)
     }
 
+    // function qui permet de lire le fichier
     private fun readFromFile() {
 
         val jsonFile = File(filesDir, "cart.json")
@@ -187,7 +194,7 @@ class DetailsDishesActivity : AppCompatActivity() {
 
     }
 
-
+    // function qui permet de vérifier si le fichier existe
     private fun fileExists(): Boolean {
         val file = File(filesDir, "cart.json")
         return file.exists()
